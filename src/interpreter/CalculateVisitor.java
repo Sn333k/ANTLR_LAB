@@ -10,8 +10,8 @@ import org.antlr.v4.runtime.misc.Interval;
 public class CalculateVisitor extends firstBaseVisitor<Integer> {
     private TokenStream tokStream = null;
     private CharStream input=null;
-    private GlobalSymbols<Integer> globals = new GlobalSymbols<>();
-    private LocalSymbols<Integer> locals = new LocalSymbols<>();
+    private final GlobalSymbols<Integer> globals = new GlobalSymbols<>();
+    private final LocalSymbols<Integer> locals = new LocalSymbols<>();
     public CalculateVisitor(CharStream inp) {
         super();
         this.input = inp;
@@ -67,7 +67,7 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
 
     @Override
     public Integer visitBinOp(firstParser.BinOpContext ctx) {
-        Integer result=0;
+        int result=0;
         switch (ctx.op.getType()) {
             case firstLexer.ADD:
                 result = visit(ctx.l) + visit(ctx.r);
@@ -133,6 +133,49 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
             result = visit(b);
         }
         locals.leaveScope();
+        return result;
+    }
+
+    @Override
+    public Integer visitRelOp(firstParser.RelOpContext ctx) {
+        int l = visit(ctx.l);
+        int r = visit(ctx.r);
+        return switch (ctx.op.getType()) {
+            case firstLexer.GT -> (l > r) ? 1 : 0;
+            case firstLexer.LT -> (l < r) ? 1 : 0;
+            case firstLexer.GE -> (l >= r) ? 1 : 0;
+            case firstLexer.LE -> (l <= r) ? 1 : 0;
+            case firstLexer.EQ -> (l == r) ? 1 : 0;
+            case firstLexer.NE -> (l != r) ? 1 : 0;
+            default -> 0;
+        };
+    }
+
+    @Override
+    public Integer visitLogicOp(firstParser.LogicOpContext ctx) {
+        int l = visit(ctx.l);
+        if (ctx.op.getType() == firstLexer.AND) {
+            if (l == 0) return 0;
+            return (visit(ctx.r) != 0) ? 1 : 0;
+        }
+        if (ctx.op.getType() == firstLexer.OR) {
+            if (l != 0) return 1;
+            return (visit(ctx.r) != 0) ? 1 : 0;
+        }
+        return 0;
+    }
+
+    @Override
+    public Integer visitNotOp(firstParser.NotOpContext ctx) {
+        return (visit(ctx.expr()) == 0) ? 1 : 0;
+    }
+
+    @Override
+    public Integer visitWhile_stat(firstParser.While_statContext ctx) {
+        Integer result = 0;
+        while (visit(ctx.cond) != 0) {
+            result = visit(ctx.body);
+        }
         return result;
     }
 }
