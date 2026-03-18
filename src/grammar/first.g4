@@ -1,6 +1,6 @@
 grammar first;
 
-prog:	stat* EOF ;
+prog:	block* EOF ;
 
 stat: expr #expr_stat
     | IF_kw '(' cond=expr ')' then=block  ('else' else=block)? #if_stat
@@ -15,6 +15,7 @@ expr:
         l=expr op=(MUL|DIV) r=expr #binOp
     |	l=expr op=(ADD|SUB) r=expr #binOp
     |	INT #int_tok
+    |   ID #var
     |	'(' expr ')' #pars
     | <assoc=right> ID '=' expr # assign
     ;

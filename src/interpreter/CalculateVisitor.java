@@ -1,6 +1,7 @@
 package interpreter;
 
 import grammar.*;
+import SymbolTable.*;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenStream;
@@ -9,6 +10,8 @@ import org.antlr.v4.runtime.misc.Interval;
 public class CalculateVisitor extends firstBaseVisitor<Integer> {
     private TokenStream tokStream = null;
     private CharStream input=null;
+    private GlobalSymbols<Integer> globals = new GlobalSymbols<>();
+    private LocalSymbols<Integer> locals = new LocalSymbols<>();
     public CalculateVisitor(CharStream inp) {
         super();
         this.input = inp;
@@ -85,5 +88,51 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
         }
         return result;
     }
+    private Integer getVar(String name) {
+        try {
+            return locals.getSymbol(name);
+        } catch (Exception e) {
+            return globals.getSymbol(name);
+        }
+    }
 
+    @Override
+    public Integer visitVar(firstParser.VarContext ctx) {
+        String name = ctx.ID().getText();
+        return getVar(name);
+    }
+
+    @Override
+    public Integer visitAssign(firstParser.AssignContext ctx) {
+        String name = ctx.ID().getText();
+        Integer value = visit(ctx.expr());
+        try {
+            locals.setSymbol(name, value);
+        } catch (Exception e) {
+            if (globals.hasSymbol(name)) {
+                globals.setSymbol(name, value);
+            } else {
+                locals.newSymbol(name);
+                locals.setSymbol(name, value);
+            }
+        }
+
+        return value;
+    }
+
+    @Override
+    public Integer visitBlock_single(firstParser.Block_singleContext ctx) {
+        return visit(ctx.stat());
+    }
+
+    @Override
+    public Integer visitBlock_real(firstParser.Block_realContext ctx) {
+        locals.enterScope();
+        Integer result = 0;
+        for (var b : ctx.block()) {
+            result = visit(b);
+        }
+        locals.leaveScope();
+        return result;
+    }
 }
