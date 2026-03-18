@@ -7,11 +7,17 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.misc.Interval;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class CalculateVisitor extends firstBaseVisitor<Integer> {
     private TokenStream tokStream = null;
     private CharStream input=null;
     private final GlobalSymbols<Integer> globals = new GlobalSymbols<>();
     private final LocalSymbols<Integer> locals = new LocalSymbols<>();
+    private HashMap<String, Function> functions = new HashMap<>();
+
     public CalculateVisitor(CharStream inp) {
         super();
         this.input = inp;
@@ -176,6 +182,46 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
         while (visit(ctx.cond) != 0) {
             result = visit(ctx.body);
         }
+        return result;
+    }
+
+    @Override
+    public Integer visitFuncDef(firstParser.FuncDefContext ctx) {
+        String name = ctx.ID().getText();
+        List<String> params = new ArrayList<>();
+        if (ctx.paramList() != null) {
+            for (var id : ctx.paramList().ID()) {
+                params.add(id.getText());
+            }
+        }
+        Function f = new Function(params, ctx.block());
+        functions.put(name, f);
+        return 0;
+    }
+
+    @Override
+    public Integer visitFuncCall(firstParser.FuncCallContext ctx) {
+        String name = ctx.ID().getText();
+        Function f = functions.get(name);
+        if (f == null) {
+            throw new RuntimeException("Function " + name + " not defined!");
+        }
+        List<Integer> args = new ArrayList<>();
+        if (ctx.argList() != null) {
+            for (var e : ctx.argList().expr()) {
+                args.add(visit(e));
+            }
+        }
+        if (args.size() != f.params.size()) {
+            throw new RuntimeException("Wrong number of arguments!");
+        }
+        locals.enterScope();
+        for (int i = 0; i < args.size(); i++) {
+            locals.newSymbol(f.params.get(i));
+            locals.setSymbol(f.params.get(i), args.get(i));
+        }
+        Integer result = visit(f.body);
+        locals.leaveScope();
         return result;
     }
 }
