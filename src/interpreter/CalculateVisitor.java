@@ -16,7 +16,7 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
     private CharStream input=null;
     private final GlobalSymbols<Integer> globals = new GlobalSymbols<>();
     private final LocalSymbols<Integer> locals = new LocalSymbols<>();
-    private HashMap<String, Function> functions = new HashMap<>();
+    private final HashMap<String, Function> functions = new HashMap<>();
 
     public CalculateVisitor(CharStream inp) {
         super();
@@ -55,8 +55,8 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
     public Integer visitPrint_stat(firstParser.Print_statContext ctx) {
         var st = ctx.expr();
         var result = visit(st);
-        System.out.printf("|%s=%d|\n", st.getText(), result); //nie drukuje ukrytych ani pominiętych spacji
-        //System.out.printf("|%s=%d|\n", getText(st),  result); //drukuje wszystkie spacje
+        //System.out.printf("|%s=%d|\n", st.getText(), result); //nie drukuje ukrytych ani pominiętych spacji
+        System.out.printf("|%s=%d|\n", getText(st),  result); //drukuje wszystkie spacje
         //System.out.printf("|%s=%d|\n", tokStream.getText(st),  result); //drukuje spacje z ukrytego kanału, ale nie ->skip
         return result;
     }
@@ -94,6 +94,7 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
         }
         return result;
     }
+
     private Integer getVar(String name) {
         try {
             return locals.getSymbol(name);
@@ -122,7 +123,6 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
                 locals.setSymbol(name, value);
             }
         }
-
         return value;
     }
 
@@ -139,49 +139,6 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
             result = visit(b);
         }
         locals.leaveScope();
-        return result;
-    }
-
-    @Override
-    public Integer visitRelOp(firstParser.RelOpContext ctx) {
-        int l = visit(ctx.l);
-        int r = visit(ctx.r);
-        return switch (ctx.op.getType()) {
-            case firstLexer.GT -> (l > r) ? 1 : 0;
-            case firstLexer.LT -> (l < r) ? 1 : 0;
-            case firstLexer.GE -> (l >= r) ? 1 : 0;
-            case firstLexer.LE -> (l <= r) ? 1 : 0;
-            case firstLexer.EQ -> (l == r) ? 1 : 0;
-            case firstLexer.NE -> (l != r) ? 1 : 0;
-            default -> 0;
-        };
-    }
-
-    @Override
-    public Integer visitLogicOp(firstParser.LogicOpContext ctx) {
-        int l = visit(ctx.l);
-        if (ctx.op.getType() == firstLexer.AND) {
-            if (l == 0) return 0;
-            return (visit(ctx.r) != 0) ? 1 : 0;
-        }
-        if (ctx.op.getType() == firstLexer.OR) {
-            if (l != 0) return 1;
-            return (visit(ctx.r) != 0) ? 1 : 0;
-        }
-        return 0;
-    }
-
-    @Override
-    public Integer visitNotOp(firstParser.NotOpContext ctx) {
-        return (visit(ctx.expr()) == 0) ? 1 : 0;
-    }
-
-    @Override
-    public Integer visitWhile_stat(firstParser.While_statContext ctx) {
-        Integer result = 0;
-        while (visit(ctx.cond) != 0) {
-            result = visit(ctx.body);
-        }
         return result;
     }
 
@@ -212,13 +169,13 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
                 args.add(visit(e));
             }
         }
-        if (args.size() != f.params.size()) {
+        if (args.size() != f.parameters.size()) {
             throw new RuntimeException("Wrong number of arguments!");
         }
         locals.enterScope();
         for (int i = 0; i < args.size(); i++) {
-            locals.newSymbol(f.params.get(i));
-            locals.setSymbol(f.params.get(i), args.get(i));
+            locals.newSymbol(f.parameters.get(i));
+            locals.setSymbol(f.parameters.get(i), args.get(i));
         }
         Integer result = visit(f.body);
         locals.leaveScope();

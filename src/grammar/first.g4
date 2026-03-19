@@ -3,10 +3,9 @@ grammar first;
 prog:	stat* EOF ;
 
 stat:  IF_kw '(' cond=expr ')' then=block  ('else' else=block)? #if_stat
-    | WHILE '(' cond=expr ')' body=block    #while_stat
     | ID '(' paramList ')' block #funcDef
     | expr #expr_stat
-    | '->' expr #print_stat
+    | '>' expr #print_stat
     ;
 
 block : stat #block_single
@@ -16,9 +15,6 @@ block : stat #block_single
 expr:
         l=expr op=(MUL|DIV) r=expr #binOp
     |	l=expr op=(ADD|SUB) r=expr #binOp
-    |   l=expr op=(GT|LT|GE|LE|EQ|NE) r=expr #relOp
-    |   l=expr op=(AND|OR) r=expr #logicOp
-    |   NOT expr #notOp
     |	INT #int_tok
     |   ID '(' argList? ')' #funcCall
     |   ID #var
@@ -27,22 +23,15 @@ expr:
     ;
 
 paramList : ID (',' ID)* ;
+
 argList   : expr (',' expr)* ;
 
 IF_kw : 'if' ;
-WHILE : 'while' ;
 
 DIV : '/' ;
 MUL : '*' ;
 SUB : '-' ;
 ADD : '+' ;
-
-GT  : '>' ;
-LT  : '<' ;
-GE  : '>=' ;
-LE  : '<=' ;
-EQ  : '==' ;
-NE  : '!=' ;
 
 AND : '&&' ;
 OR  : '||' ;
