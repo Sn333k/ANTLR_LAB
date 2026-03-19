@@ -25,6 +25,6 @@ public class Start {
 
         CalculateVisitor v = new CalculateVisitor(inp,tokens);
         Integer res = v.visit(tree);
-        System.out.printf("Wynik: %d\n", res);
+        //System.out.printf("Wynik: %d\n", res);
     }
 }
