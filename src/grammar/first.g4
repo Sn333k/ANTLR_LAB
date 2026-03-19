@@ -6,7 +6,7 @@ stat:  IF_kw '(' cond=expr ')' then=block  ('else' else=block)? #if_stat
     | WHILE '(' cond=expr ')' body=block    #while_stat
     | ID '(' paramList ')' block #funcDef
     | expr #expr_stat
-    | '>' expr #print_stat
+    | '->' expr #print_stat
     ;
 
 block : stat #block_single
