@@ -179,7 +179,9 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
             locals.newSymbol(f.parameters.get(i));
             locals.setSymbol(f.parameters.get(i), args.get(i));
         }
+        locals.enterScope();
         Integer result = visit(f.body);
+        locals.leaveScope();
         locals.leaveScope();
         return result;
     }
