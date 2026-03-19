@@ -8,14 +8,10 @@ import java.io.IOException;
 
 public class Start {
     public static void main(String[] args) throws IOException {
-        /*CharStream inp = null;
-        try {
-            //inp = CharStreams.fromFileName("we.first");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
-//        CharStream inp = CharStreams.fromString("1+2*3-(4+5)","wejście");
-        CharStream inp = CharStreams.fromStream(System.in);
+        CharStream inp = null;
+        inp = CharStreams.fromFileName("input.txt");
+        //CharStream inp = CharStreams.fromString("1+2*3-(4+5)","wejście");
+        //CharStream inp = CharStreams.fromStream(System.in);
 
         firstLexer lex = new firstLexer(inp);
         CommonTokenStream tokens = new CommonTokenStream(lex);

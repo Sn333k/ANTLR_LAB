@@ -144,15 +144,16 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
 
     @Override
     public Integer visitFuncDef(firstParser.FuncDefContext ctx) {
-        String name = ctx.ID().getText();
+        String name = ctx.name.getText();
         List<String> params = new ArrayList<>();
-        if (ctx.paramList() != null) {
-            for (var id : ctx.paramList().ID()) {
-                params.add(id.getText());
+        if (ctx.par != null) {
+            for (int i=0; i<ctx.par.size();i++) {
+                params.add(ctx.par.get(i).getText());
             }
         }
         Function f = new Function(params, ctx.block());
         functions.put(name, f);
+        //System.out.println("funkcja "+name +" zdefiniowana");
         return 0;
     }
 
@@ -160,13 +161,14 @@ public class CalculateVisitor extends firstBaseVisitor<Integer> {
     public Integer visitFuncCall(firstParser.FuncCallContext ctx) {
         String name = ctx.ID().getText();
         Function f = functions.get(name);
+        //System.out.println("funkcja "+name +" odczytywana");
         if (f == null) {
             throw new RuntimeException("Function " + name + " not defined!");
         }
         List<Integer> args = new ArrayList<>();
-        if (ctx.argList() != null) {
-            for (var e : ctx.argList().expr()) {
-                args.add(visit(e));
+        if (ctx.argList != null) {
+            for (int i=0; i<ctx.argList.size();i++) {
+                args.add(visit(ctx.argList.get(i)));
             }
         }
         if (args.size() != f.parameters.size()) {

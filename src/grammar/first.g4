@@ -3,7 +3,7 @@ grammar first;
 prog:	stat* EOF ;
 
 stat:  IF_kw '(' cond=expr ')' then=block  ('else' else=block)? #if_stat
-    | ID '(' paramList ')' block #funcDef
+    | name=ID '(' (par += ID (',' par+= ID)*)? ')' block #funcDef
     | expr #expr_stat
     | '>' expr #print_stat
     ;
@@ -16,15 +16,11 @@ expr:
         l=expr op=(MUL|DIV) r=expr #binOp
     |	l=expr op=(ADD|SUB) r=expr #binOp
     |	INT #int_tok
-    |   ID '(' argList? ')' #funcCall
+    |   ID '(' (argList+=expr (',' argList+=expr)*)? ')' #funcCall
     |   ID #var
     |	'(' expr ')' #pars
     | <assoc=right> ID '=' expr # assign
     ;
-
-paramList : ID (',' ID)* ;
-
-argList   : expr (',' expr)* ;
 
 IF_kw : 'if' ;
 
