@@ -1,4 +1,4 @@
-// Generated from /home/student/IdeaProjects/ANTLR_LAB/src/grammar/first.g4 by ANTLR 4.13.2
+// Generated from /home/sn3k/IdeaProjects/ANTLR_LAB/src/grammar/first.g4 by ANTLR 4.13.2
 package grammar;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -29,42 +29,6 @@ public class firstBaseListener implements firstListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIf_stat(firstParser.If_statContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitIf_stat(firstParser.If_statContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterWhile_stat(firstParser.While_statContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitWhile_stat(firstParser.While_statContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFuncDef(firstParser.FuncDefContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFuncDef(firstParser.FuncDefContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterExpr_stat(firstParser.Expr_statContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -72,6 +36,18 @@ public class firstBaseListener implements firstListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpr_stat(firstParser.Expr_statContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIf_stat(firstParser.If_statContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIf_stat(firstParser.If_statContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -125,30 +101,6 @@ public class firstBaseListener implements firstListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNotOp(firstParser.NotOpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNotOp(firstParser.NotOpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterVar(firstParser.VarContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVar(firstParser.VarContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterPars(firstParser.ParsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -156,42 +108,6 @@ public class firstBaseListener implements firstListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPars(firstParser.ParsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLogicOp(firstParser.LogicOpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLogicOp(firstParser.LogicOpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFuncCall(firstParser.FuncCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFuncCall(firstParser.FuncCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterRelOp(firstParser.RelOpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitRelOp(firstParser.RelOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -216,30 +132,6 @@ public class firstBaseListener implements firstListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssign(firstParser.AssignContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterParamList(firstParser.ParamListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitParamList(firstParser.ParamListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterArgList(firstParser.ArgListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitArgList(firstParser.ArgListContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

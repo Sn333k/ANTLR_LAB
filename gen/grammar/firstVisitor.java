@@ -1,4 +1,4 @@
-// Generated from /home/student/IdeaProjects/ANTLR_LAB/src/grammar/first.g4 by ANTLR 4.13.2
+// Generated from /home/sn3k/IdeaProjects/ANTLR_LAB/src/grammar/first.g4 by ANTLR 4.13.2
 package grammar;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -17,33 +17,19 @@ public interface firstVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProg(firstParser.ProgContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code if_stat}
-	 * labeled alternative in {@link firstParser#stat}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIf_stat(firstParser.If_statContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code while_stat}
-	 * labeled alternative in {@link firstParser#stat}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWhile_stat(firstParser.While_statContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code funcDef}
-	 * labeled alternative in {@link firstParser#stat}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncDef(firstParser.FuncDefContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code expr_stat}
 	 * labeled alternative in {@link firstParser#stat}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitExpr_stat(firstParser.Expr_statContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code if_stat}
+	 * labeled alternative in {@link firstParser#stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIf_stat(firstParser.If_statContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code print_stat}
 	 * labeled alternative in {@link firstParser#stat}.
@@ -73,47 +59,12 @@ public interface firstVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInt_tok(firstParser.Int_tokContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code notOp}
-	 * labeled alternative in {@link firstParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNotOp(firstParser.NotOpContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code var}
-	 * labeled alternative in {@link firstParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVar(firstParser.VarContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code pars}
 	 * labeled alternative in {@link firstParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitPars(firstParser.ParsContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code logicOp}
-	 * labeled alternative in {@link firstParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLogicOp(firstParser.LogicOpContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code funcCall}
-	 * labeled alternative in {@link firstParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncCall(firstParser.FuncCallContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code relOp}
-	 * labeled alternative in {@link firstParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitRelOp(firstParser.RelOpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code binOp}
 	 * labeled alternative in {@link firstParser#expr}.
@@ -128,16 +79,4 @@ public interface firstVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAssign(firstParser.AssignContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link firstParser#paramList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParamList(firstParser.ParamListContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link firstParser#argList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArgList(firstParser.ArgListContext ctx);
 }
