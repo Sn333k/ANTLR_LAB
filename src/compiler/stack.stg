@@ -18,6 +18,30 @@ dodaj(p1,p2) ::= <<
 ADD
 >>
 
+sub(p1,p2) ::= <<
+<twoop(p1,p2)>
+SUB
+>>
+
+mul(p1,p2) ::= <<
+<twoop(p1,p2)>
+MUL
+>>
+
+div(p1,p2) ::= <<
+<twoop(p1,p2)>
+DIV
+>>
+
 dek(n) ::= <<
 DD <n>
+>>
+
+load(addr) ::= <<
+PUSH [<addr>]
+>>
+
+store(addr, expr) ::= <<
+<expr>
+POP [<addr>]
 >>
