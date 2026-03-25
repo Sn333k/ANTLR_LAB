@@ -2,7 +2,8 @@ grammar first;
 
 prog:	stat* EOF ;
 
-stat:  IF_kw '(' cond=expr ')' then=block  ('else' else=block)? #if_stat
+stat: 'var' ID #varDecl
+    | IF_kw '(' cond=expr ')' then=block  ('else' else=block)? #if_stat
     | name=ID '(' (par += ID (',' par+= ID)*)? ')' block #funcDef
     | expr #expr_stat
     | '>' expr #print_stat
