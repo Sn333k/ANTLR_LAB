@@ -2,7 +2,7 @@ grammar first;
 
 prog:	stat* EOF ;
 
-stat: 'var' ID #varDecl
+stat: VAR ID #varDecl
     | IF_kw '(' cond=expr ')' then=block  ('else' else=block)? #if_stat
     | name=ID '(' (par += ID (',' par+= ID)*)? ')' block #funcDef
     | expr #expr_stat
@@ -33,6 +33,8 @@ ADD : '+' ;
 AND : '&&' ;
 OR  : '||' ;
 NOT : '!' ;
+
+VAR : 'var';
 
 //NEWLINE : [\r\n]+ -> skip;
 NEWLINE : [\r\n]+ -> channel(HIDDEN);

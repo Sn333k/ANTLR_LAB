@@ -33,10 +33,10 @@ public class EmitVisitor extends firstBaseVisitor<ST> {
     }
 
 
-    @Override
+    /*@Override
     public ST visitTerminal(TerminalNode node) {
         return new ST("Terminal node:<n>").add("n",node.getText());
-    }
+    }*/
 
     @Override
     public ST visitInt_tok(firstParser.Int_tokContext ctx) {
@@ -82,7 +82,7 @@ public class EmitVisitor extends firstBaseVisitor<ST> {
         }
         int addr = globals.get(name);
         ST st = stGroup.getInstanceOf("load");
-        st.add("addr", addr);
+        st.add("name", name);
         return st;
     }
 
@@ -92,9 +92,8 @@ public class EmitVisitor extends firstBaseVisitor<ST> {
         if (!globals.containsKey(name)) {
             throw new RuntimeException("Variable not declared: " + name);
         }
-        int addr = globals.get(name);
         ST st = stGroup.getInstanceOf("store");
-        st.add("addr", addr);
+        st.add("name", name);
         st.add("expr", visit(ctx.expr()));
         return st;
     }

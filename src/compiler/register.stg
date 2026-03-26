@@ -1,7 +1,7 @@
 group pierwszy;
 
 deflt(elem) ::= <<
-    <elem; separator="\n">
+<elem; separator="\n">
 >>
 
 int(i) ::= <<
@@ -25,25 +25,25 @@ sub(p1,p2) ::= <<
 SUB A,B
 >>
 
-mul(p1,p2) ::= <<
-<twoop(p1,p2)>
-MUL A,B
->>
-
 div(p1,p2) ::= <<
 <twoop(p1,p2)>
 DIV A,B
+>>
+
+mul(p1,p2) ::= <<
+<twoop(p1,p2)>
+MUL A,B
 >>
 
 dek(n) ::= <<
 DD <n>
 >>
 
-load(addr) ::= <<
-MOV A, [<addr>]
+load(name) ::= <<
+MOV A, [<name>]
 >>
 
-store(addr, expr) ::= <<
+store(name, expr) ::= <<
 <expr>
-MOV [<addr>], A
+MOV [<name>], A
 >>
