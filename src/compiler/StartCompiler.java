@@ -29,37 +29,28 @@ public class StartCompiler {
         firstParser par = new firstParser(tokens);
 
         ParseTree tree = par.prog();
-
         //st group
+        System.out.println("===REGISTER===");
+        printCompiler("src/compiler/register.stg", tree, "wyReg.asm");
+        System.out.println("===STACK===");
+        printCompiler("src/compiler/stack.stg", tree, "wyStack.asm");
+
 //        STGroup.trackCreationEvents = true;
-        STGroup group = new STGroupFile("src/compiler/register.stg");
+//        res.inspect();
+    }
+    private static void printCompiler(String stgPath, ParseTree tree, String outFile){
+        STGroup group = new STGroupFile(stgPath);
 
         EmitVisitor em = new EmitVisitor(group);
         ST res = em.visit(tree);
-        System.out.println("===REGISTER===");
+
         System.out.println(res.render());
         try {
-            var wr = new FileWriter("wyReg.asm");
+            var wr = new FileWriter(outFile);
             wr.write(res.render());
             wr.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        group = new STGroupFile("src/compiler/stack.stg");
-
-        em = new EmitVisitor(group);
-        res = em.visit(tree);
-        System.out.println("===STACK===");
-        System.out.println(res.render());
-        try {
-            var wr = new FileWriter("wyStack.asm");
-            wr.write(res.render());
-            wr.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-//        res.inspect();
     }
 }
