@@ -45,3 +45,18 @@ store(name, expr) ::= <<
 <expr>
 POP [<name>]
 >>
+
+funcDef(name, body) ::= <<
+<name>:
+<body>
+RET
+>>
+
+args(list) ::= <<
+<list:{e | <e>}>
+>>
+
+funcCall(name, args) ::= <<
+<args>
+CALL <name>
+>>

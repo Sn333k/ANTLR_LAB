@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class EmitVisitor extends firstBaseVisitor<ST> {
     private Map<String, Integer> globals = new HashMap<>();
+    Map<String, Integer> paramOffset = new HashMap<>();
     private int addr = 0;
     private final STGroup stGroup;
 
@@ -77,13 +78,17 @@ public class EmitVisitor extends firstBaseVisitor<ST> {
     @Override
     public ST visitVar(firstParser.VarContext ctx) {
         String name = ctx.ID().getText();
-        if (!globals.containsKey(name)) {
-            throw new RuntimeException("Undefined variable: " + name);
+        if (paramOffset.containsKey(name)) {
+            ST st = stGroup.getInstanceOf("param");
+            st.add("offset", paramOffset.get(name));
+            return st;
         }
-        int addr = globals.get(name);
-        ST st = stGroup.getInstanceOf("load");
-        st.add("name", name);
-        return st;
+        if (globals.containsKey(name)) {
+            ST st = stGroup.getInstanceOf("load");
+            st.add("addr", globals.get(name));
+            return st;
+        }
+        throw new RuntimeException("Undefined variable: " + name);
     }
 
     @Override
@@ -96,5 +101,39 @@ public class EmitVisitor extends firstBaseVisitor<ST> {
         st.add("name", name);
         st.add("expr", visit(ctx.expr()));
         return st;
+    }
+
+    @Override
+    public ST visitFuncDef(firstParser.FuncDefContext ctx) {
+        String name = ctx.name.getText();
+        paramOffset.clear();
+        int offset = 2;
+        if (ctx.par != null) {
+            for (var id : ctx.par) {
+                paramOffset.put(id.getText(), offset++);
+            }
+        }
+        ST st = stGroup.getInstanceOf("funcDef");
+        st.add("name", name);
+        st.add("body", visit(ctx.block()));
+        return st;
+    }
+
+    @Override
+    public ST visitFuncCall(firstParser.FuncCallContext ctx) {
+        String name = ctx.ID().getText();
+        ST argsST = stGroup.getInstanceOf("args");
+        int count = 0;
+        if(ctx.argList != null){
+            for(var e : ctx.argList){
+                argsST.add("list", visit(e));
+                count++;
+            }
+        }
+        ST call = stGroup.getInstanceOf("funcCall");
+        call.add("name", name);
+        call.add("args", argsST);
+        call.add("argc",count);
+        return call;
     }
 }

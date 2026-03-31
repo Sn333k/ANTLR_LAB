@@ -47,3 +47,28 @@ store(name, expr) ::= <<
 <expr>
 MOV [<name>], A
 >>
+
+param(offset) ::= <<
+MOV A,[BP+<offset>]
+>>
+
+funcDef(name, body) ::= <<
+<name>
+PUSH BP
+MOV BP, SP
+<body>
+POP BP
+RET
+>>
+
+args(list) ::= <<
+<list:{e | <e>
+PUSH A
+}>
+>>
+
+funcCall(name, args, argc) ::= <<
+<args>
+CALL <name>
+ADD SP, #<argc>
+>>

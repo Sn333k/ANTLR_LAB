@@ -32,8 +32,8 @@ public class StartCompiler {
         //st group
         System.out.println("===REGISTER===");
         printCompiler("src/compiler/register.stg", tree, "wyReg.asm");
-        System.out.println("===STACK===");
-        printCompiler("src/compiler/stack.stg", tree, "wyStack.asm");
+        //System.out.println("===STACK===");
+        //printCompiler("src/compiler/stack.stg", tree, "wyStack.asm");
 
 //        STGroup.trackCreationEvents = true;
 //        res.inspect();
