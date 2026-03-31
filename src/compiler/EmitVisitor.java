@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class EmitVisitor extends firstBaseVisitor<ST> {
     private final Map<String, Integer> globals = new HashMap<>();
-    private Map<String, Integer> currentParams = new HashMap<>();
+    private final Map<String, Integer> currentParams = new HashMap<>();
     private int addr = 0;
     private final STGroup stGroup;
 
