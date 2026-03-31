@@ -1,5 +1,15 @@
 group pierwszy;
 
+program(funcs, main) ::= <<
+JMP start
+
+<funcs>
+
+start:
+<main>
+BRK
+>>
+
 deflt(elem) ::= <<
 <elem; separator="\n">
 >>
@@ -53,22 +63,22 @@ MOV A,[BP+<offset>]
 >>
 
 funcDef(name, body) ::= <<
-<name>
-PUSH BP
+<name>:
 MOV BP, SP
 <body>
-POP BP
 RET
 >>
 
-args(list) ::= <<
-<list:{e | <e>
+arg(n) ::= <<
+MOV A, [BP-<n>]
+>>
+
+pushArg(expr) ::= <<
+<expr>
 PUSH A
-}>
 >>
 
 funcCall(name, args, argc) ::= <<
 <args>
 CALL <name>
-ADD SP, #<argc>
 >>

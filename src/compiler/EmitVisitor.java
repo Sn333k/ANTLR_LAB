@@ -1,7 +1,6 @@
 package compiler;
 
 import grammar.firstLexer;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import grammar.firstBaseVisitor;
@@ -11,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EmitVisitor extends firstBaseVisitor<ST> {
-    private Map<String, Integer> globals = new HashMap<>();
-    Map<String, Integer> paramOffset = new HashMap<>();
+    private final Map<String, Integer> globals = new HashMap<>();
+    private Map<String, Integer> currentParams = new HashMap<>();
     private int addr = 0;
     private final STGroup stGroup;
 
@@ -32,12 +31,6 @@ public class EmitVisitor extends firstBaseVisitor<ST> {
             aggregate.add("elem",nextResult);
         return aggregate;
     }
-
-
-    /*@Override
-    public ST visitTerminal(TerminalNode node) {
-        return new ST("Terminal node:<n>").add("n",node.getText());
-    }*/
 
     @Override
     public ST visitInt_tok(firstParser.Int_tokContext ctx) {
@@ -78,17 +71,12 @@ public class EmitVisitor extends firstBaseVisitor<ST> {
     @Override
     public ST visitVar(firstParser.VarContext ctx) {
         String name = ctx.ID().getText();
-        if (paramOffset.containsKey(name)) {
-            ST st = stGroup.getInstanceOf("param");
-            st.add("offset", paramOffset.get(name));
-            return st;
+        if (currentParams.containsKey(name)) {
+            return stGroup.getInstanceOf("arg")
+                    .add("n", currentParams.get(name)+1);
         }
-        if (globals.containsKey(name)) {
-            ST st = stGroup.getInstanceOf("load");
-            st.add("addr", globals.get(name));
-            return st;
-        }
-        throw new RuntimeException("Undefined variable: " + name);
+        return stGroup.getInstanceOf("load")
+                .add("name", name);
     }
 
     @Override
@@ -105,35 +93,31 @@ public class EmitVisitor extends firstBaseVisitor<ST> {
 
     @Override
     public ST visitFuncDef(firstParser.FuncDefContext ctx) {
-        String name = ctx.name.getText();
-        paramOffset.clear();
-        int offset = 2;
+        currentParams.clear();
         if (ctx.par != null) {
-            for (var id : ctx.par) {
-                paramOffset.put(id.getText(), offset++);
+            int n = ctx.par.size();
+            for (int i = 0; i < n; i++) {
+                currentParams.put(ctx.par.get(i).getText(), n - i);
             }
         }
-        ST st = stGroup.getInstanceOf("funcDef");
-        st.add("name", name);
-        st.add("body", visit(ctx.block()));
-        return st;
+        return stGroup.getInstanceOf("funcDef")
+                .add("name", ctx.name.getText())
+                .add("body", visit(ctx.block()));
     }
 
     @Override
     public ST visitFuncCall(firstParser.FuncCallContext ctx) {
-        String name = ctx.ID().getText();
-        ST argsST = stGroup.getInstanceOf("args");
-        int count = 0;
-        if(ctx.argList != null){
-            for(var e : ctx.argList){
-                argsST.add("list", visit(e));
-                count++;
+        ST args = stGroup.getInstanceOf("deflt");
+        if (ctx.argList != null) {
+            for (var e : ctx.argList) {
+                args.add("elem",
+                        stGroup.getInstanceOf("pushArg")
+                                .add("expr", visit(e))
+                );
             }
         }
-        ST call = stGroup.getInstanceOf("funcCall");
-        call.add("name", name);
-        call.add("args", argsST);
-        call.add("argc",count);
-        return call;
+        return stGroup.getInstanceOf("funcCall")
+                .add("name", ctx.ID().getText())
+                .add("args", args);
     }
 }
