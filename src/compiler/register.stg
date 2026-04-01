@@ -2,9 +2,7 @@ group pierwszy;
 
 program(funcs, main) ::= <<
 JMP start
-
 <funcs>
-
 start:
 <main>
 BRK
@@ -67,6 +65,7 @@ funcDef(name, body) ::= <<
 MOV BP, SP
 <body>
 RET
+
 >>
 
 arg(n) ::= <<
@@ -81,4 +80,6 @@ PUSH A
 funcCall(name, args, argc) ::= <<
 <args>
 CALL <name>
+PUSH A
+
 >>
